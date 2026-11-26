@@ -1,0 +1,19 @@
+services:
+  jianpu-turner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jianpu-page-turner:latest
+    container_name: jianpu-page-turner
+    ports:
+      # 默认访问 http://localhost:8080
+      - "8080:80"
+      # 同时映射到 Vite 惯用端口 5173，方便环境探测
+      - "5173:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
